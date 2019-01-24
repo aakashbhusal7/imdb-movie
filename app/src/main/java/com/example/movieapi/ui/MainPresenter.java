@@ -9,11 +9,15 @@ import com.example.movieapi.model.MovieResponse;
 import com.example.movieapi.network.NetworkClient;
 import com.example.movieapi.network.RestApi;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.http.QueryMap;
 
 public class MainPresenter implements MainPresenterInterface {
 
@@ -29,10 +33,11 @@ public class MainPresenter implements MainPresenterInterface {
         getObservable().subscribeWith(getObserver());
     }
 
+
     public Observable<MovieResponse>getObservable(){
         return NetworkClient.getRetrofit()
                 .create(RestApi.class)
-                .getMovies(BuildConfig.apikey)
+                .getMovies(BuildConfig.apikey,"23659")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

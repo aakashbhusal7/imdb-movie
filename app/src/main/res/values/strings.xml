@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">MovieApi</string>
     <string name="app_name_toolbar">Movify</string>
+    <string name="search">Search</string>
+    <string name="query_movie_name">Enter the movie name</string>
 
 </resources>
