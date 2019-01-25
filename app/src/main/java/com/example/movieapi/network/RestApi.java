@@ -13,7 +13,8 @@ import retrofit2.http.QueryMap;
 public interface RestApi {
 
     @GET("discover/movie")
-    Observable<MovieResponse> getMovies(@Query("api_key")String api_key,@Query("with_cast")String cast);
+    Observable<MovieResponse> getMovies(@Query("api_key")String api_key);
+//    ,@Query("with_cast")String cast
 
     @GET("search/movie")
     Observable<MovieResponse> getMoviesOnSearch(@Query("api_key")String api_key, @Query("query")String query);

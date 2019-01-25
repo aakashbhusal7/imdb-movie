@@ -3,5 +3,6 @@
     <string name="app_name_toolbar">Movify</string>
     <string name="search">Search</string>
     <string name="query_movie_name">Enter the movie name</string>
+    <string name="no_data_available">No data available</string>
 
 </resources>

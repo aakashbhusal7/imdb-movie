@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,21 +14,23 @@ import com.bumptech.glide.Glide;
 import com.example.movieapi.R;
 import com.example.movieapi.model.Result;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MoviesHolder> {
 
     List<Result> movieList;
     Context context;
+    private TextView emptyView;
 
     public MovieAdapter(List<Result> movieList, Context context){
         this.movieList=movieList;
         this.context=context;
     }
-
     @NonNull
     @Override
-    public MoviesHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
+    public MoviesHolder onCreateViewHolder(ViewGroup parent, int i) {
         LayoutInflater layoutInflater=LayoutInflater.from(context);
         View view=layoutInflater.inflate(R.layout.row_movies_list,parent,false);
         MoviesHolder moviesHolder= new MoviesHolder(view);
@@ -44,8 +47,17 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MoviesHolder
 
     @Override
     public int getItemCount() {
-        return movieList.size();
+        int test;
+        if (movieList != null && !movieList.isEmpty()) {
+            test= movieList.size();
+        }
+        else{
+            test=0;
+        }
+        return test;
     }
+
+
 
     public class MoviesHolder extends RecyclerView.ViewHolder{
         TextView textViewTitle, textViewReleaseDate, textViewDescription;

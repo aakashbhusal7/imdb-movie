@@ -37,7 +37,7 @@ public class MainPresenter implements MainPresenterInterface {
     public Observable<MovieResponse>getObservable(){
         return NetworkClient.getRetrofit()
                 .create(RestApi.class)
-                .getMovies(BuildConfig.apikey,"23659")
+                .getMovies(BuildConfig.apikey)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

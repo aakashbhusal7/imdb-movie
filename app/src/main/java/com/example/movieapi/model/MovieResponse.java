@@ -8,10 +8,10 @@ import java.util.List;
 public class MovieResponse {
     @SerializedName("page")
     @Expose
-    private int page;
+    private Integer page;
     @SerializedName("total_results")
     @Expose
-    private String totalResults;
+    private Integer totalResults;
     @SerializedName("total_pages")
     @Expose
     private String totalPages;
@@ -21,7 +21,7 @@ public class MovieResponse {
 
     public MovieResponse(){}
 
-    public MovieResponse(Integer page,String totalResults,String totalPages,List<Result>results){
+    public MovieResponse(Integer page,Integer totalResults,String totalPages,List<Result>results){
         super();
         this.page=page;
         this.totalResults=totalResults;
@@ -29,11 +29,11 @@ public class MovieResponse {
         this.results=results;
     }
 
-    public String getTotalResults() {
+    public Integer getTotalResults() {
         return totalResults;
     }
 
-    public void setTotalResults(String totalResults) {
+    public void setTotalResults(Integer totalResults) {
         this.totalResults = totalResults;
     }
 

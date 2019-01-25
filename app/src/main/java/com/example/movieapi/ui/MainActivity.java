@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements  MainViewInterfac
         int id=item.getItemId();
         if(id==R.id.search){
             showToast("Search clicked");
-            startActivity(new Intent(this, SearchActivity.class));
+            startActivity(new Intent(MainActivity.this, SearchActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }
