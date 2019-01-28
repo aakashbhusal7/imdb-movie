@@ -1,24 +1,22 @@
 package com.example.movieapi.ui;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
-
 
 import com.example.movieapi.R;
 import com.example.movieapi.adapter.MovieAdapter;
 import com.example.movieapi.model.MovieResponse;
 import com.example.movieapi.ui.search.SearchActivity;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements  MainViewInterface{
 
@@ -26,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements  MainViewInterfac
     RecyclerView.Adapter adapter;
     MainPresenter presenter;
     RecyclerView recyclerView;
+    ProgressBar progressBar;
      Toolbar toolbar;
 
     @Override
@@ -34,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements  MainViewInterfac
         setContentView(R.layout.activity_main);
         recyclerView=findViewById(R.id.recycler_view_movies);
         toolbar=findViewById(R.id.toolbar);
+        progressBar=findViewById(R.id.progressBar);
 
         setUpMvp();
         setUpViews();
@@ -51,6 +51,16 @@ public class MainActivity extends AppCompatActivity implements  MainViewInterfac
 
     private void getMoviesList(){
         presenter.getMovies();
+    }
+
+    @Override
+    public void showProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override

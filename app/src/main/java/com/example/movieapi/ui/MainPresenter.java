@@ -4,20 +4,14 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.movieapi.BuildConfig;
-import com.example.movieapi.Constants;
 import com.example.movieapi.model.MovieResponse;
 import com.example.movieapi.network.NetworkClient;
 import com.example.movieapi.network.RestApi;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.http.QueryMap;
 
 public class MainPresenter implements MainPresenterInterface {
 
@@ -47,6 +41,7 @@ public class MainPresenter implements MainPresenterInterface {
             @Override
             public void onNext(@NonNull MovieResponse movieResponse) {
                 Log.d(TAG,"OnNext"+movieResponse.getTotalResults());
+                mainViewInterface.hideProgressBar();
                 mainViewInterface.displayMovies(movieResponse);
             }
 

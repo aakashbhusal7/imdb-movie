@@ -1,10 +1,8 @@
 package com.example.movieapi.ui.search;
 
-import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.movieapi.BuildConfig;
 import com.example.movieapi.model.MovieResponse;
@@ -16,51 +14,48 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 
-public class SearchPresenter implements SearchPresenterInterface {
+public class SearchPresenter implements SearchContract.Presenter {
 
     private static String TAG= SearchPresenter.class.getSimpleName();
-   // private SearchContract.View view;
-    private SearchViewInterface searchViewInterface;
+    private SearchContract.View view;
 
-    public SearchPresenter(SearchViewInterface searchViewInterface){
-        this.searchViewInterface=searchViewInterface;
-//        this.view=view;
-//        this.view.setPresenter(this);
+    public SearchPresenter(SearchContract.View view){
+        this.view=view;
+        this.view.setPresenter(this);
     }
-//    @Override
-//    public void getSearchResults(SearchView searchView) {
-//        getObservableQuery(searchView).
-//                debounce(TIME_IN_TEXT, TimeUnit.SECONDS)
-//                .filter(new Predicate<String>() {
-//                    @Override
-//                    public boolean test(String text) throws Exception {
-//                        if(text.isEmpty()){
-//                            return false;
-//                        }
-//                        else{
-//                            return true;
-//                        }
-//                    }
-//                })
-//                .distinctUntilChanged()
-//                .switchMap(new Function<String, ObservableSource<MovieResponse>>() {
-//                    @Override
-//                    public ObservableSource<MovieResponse> apply(@NonNull String s) throws Exception {
-//                        return NetworkClient.getRetrofit()
-//                                .create(RestApi.class)
-//                                .getMoviesOnSearch(BuildConfig.apikey,s);
-//                    }
-//                }).subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribeWith(getObserver());
-//    }
+    @Override
+    public void getSearchResults(SearchView searchView) {
+        getObservableQuery(searchView).
+                debounce(TIME_IN_TEXT, TimeUnit.SECONDS)
+                .filter(new Predicate<String>() {
+                    @Override
+                    public boolean test(String text) throws Exception {
+                        if(text.isEmpty()){
+                            return false;
+                        }
+                        else{
+                            return true;
+                        }
+                    }
+                })
+                .distinctUntilChanged()
+                .switchMap(new Function<String, ObservableSource<MovieResponse>>() {
+                    @Override
+                    public ObservableSource<MovieResponse> apply(@NonNull String s) throws Exception {
+                        return NetworkClient.getRetrofit()
+                                .create(RestApi.class)
+                                .getMoviesOnSearch(BuildConfig.apikey,s);
+                    }
+                }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(getObserver());
+    }
 
     private Observable<String>getObservableQuery(SearchView searchView){
         final PublishSubject<String>publishSubject= PublishSubject.create();
@@ -87,7 +82,7 @@ public class SearchPresenter implements SearchPresenterInterface {
             @Override
             public void onNext(@NonNull MovieResponse movieResponse) {
                 Log.d(TAG,"OnNext"+movieResponse.getTotalResults());
-                searchViewInterface.displayResult(movieResponse);
+                view.displayResult(movieResponse);
                 Log.d(TAG,"query"+movieResponse);
             }
 
@@ -105,41 +100,14 @@ public class SearchPresenter implements SearchPresenterInterface {
     }
 
     @Override
-    public void getResultsBasedOnQuery(SearchView searchView) {
-        getObservableQuery(searchView)
-                .filter(new Predicate<String>() {
-                    @Override
-                    public boolean test(@NonNull String text) throws Exception {
-                        if(text.equals("")){
-                            return false;
-                        }
-                        else{
-                            return true;
-                        }
-                    }
-                })
-                .debounce(TIME_IN_TEXT,TimeUnit.SECONDS)
-                .distinctUntilChanged()
-                .switchMap(new Function<String, ObservableSource<MovieResponse>>() {
-                    @Override
-                    public ObservableSource<MovieResponse> apply(@NonNull String s) throws Exception {
-                        return NetworkClient.getRetrofit()
-                                .create(RestApi.class)
-                                .getMoviesOnSearch(BuildConfig.apikey,s);
-                    }
-                }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(getObserver());
+    public void start() {
+
     }
 
-//    @Override
-//    public void start() {
-//
-//    }
-//
-//    @Override
-//    public void stop() {
-//
-//    }
+    @Override
+    public void stop() {
+
+    }
+
     private static long TIME_IN_TEXT=3;
 }

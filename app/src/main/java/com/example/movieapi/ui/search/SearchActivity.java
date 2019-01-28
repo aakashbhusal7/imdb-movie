@@ -11,27 +11,17 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.movieapi.R;
 import com.example.movieapi.adapter.MovieAdapter;
 import com.example.movieapi.model.MovieResponse;
 
-import java.util.List;
+public class SearchActivity extends AppCompatActivity implements SearchContract.View{
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
-public class SearchActivity extends AppCompatActivity implements SearchViewInterface{
-
-//    @BindView(R.id.toolbar) Toolbar toolbar;
-//    @BindView(R.id.recycler_query_result) RecyclerView queryRecyclerView;
-   // private SearchContract.Presenter presenter;
      private  Toolbar toolbar;
      RecyclerView queryRecyclerView;
-     SearchPresenter searchPresenter;
+     SearchContract.Presenter presenter;
      RecyclerView.Adapter adapter;
      private SearchView searchView;
     @Override
@@ -40,11 +30,10 @@ public class SearchActivity extends AppCompatActivity implements SearchViewInter
         setContentView(R.layout.activity_search);
         toolbar=findViewById(R.id.toolbar);
         queryRecyclerView=findViewById(R.id.recycler_query_result);
-        //ButterKnife.bind(this);
         setUpViews();
         setUpMvp();
-
     }
+
     private void setUpViews(){
         setSupportActionBar(toolbar);
         final LinearLayoutManager linearLayoutManager= new LinearLayoutManager(this);
@@ -53,7 +42,7 @@ public class SearchActivity extends AppCompatActivity implements SearchViewInter
     }
 
     private void setUpMvp(){
-        searchPresenter = new SearchPresenter(this);
+     new SearchPresenter(this);
     }
 
     @Override
@@ -65,7 +54,7 @@ public class SearchActivity extends AppCompatActivity implements SearchViewInter
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setMaxWidth(Integer.MAX_VALUE);
         searchView.setQueryHint(getString(R.string.query_movie_name));
-        searchPresenter.getResultsBasedOnQuery(searchView);
+        presenter.getSearchResults(searchView);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -86,11 +75,9 @@ public class SearchActivity extends AppCompatActivity implements SearchViewInter
 
     @Override
     public void displayResult(MovieResponse movieResponse) {
-        showToast("SEARCH ACTIVITY");
         if(movieResponse!=null) {
             adapter = new MovieAdapter(movieResponse.getResults(), this);
             queryRecyclerView.setAdapter(adapter);
-            showToast("LOADING RESULTS");
         }
         else{
             showToast("nothing queried");
@@ -98,20 +85,13 @@ public class SearchActivity extends AppCompatActivity implements SearchViewInter
     }
 
     @Override
-    public void showProgressBar() {
-    }
-
-    @Override
-    public void hideProgressBar() {
-    }
-
-    @Override
     public void displayError(String error) {
         showToast(error);
     }
 
-//    @Override
-//    public void setPresenter(SearchContract.Presenter presenter) {
-//        this.presenter=presenter;
-//    }
+    @Override
+    public void setPresenter(SearchContract.Presenter presenter) {
+        this.presenter=presenter;
+    }
+
 }

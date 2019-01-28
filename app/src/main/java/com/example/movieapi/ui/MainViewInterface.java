@@ -6,4 +6,6 @@ public interface MainViewInterface {
     void showToast(String message);
     void displayMovies(MovieResponse movieResponse);
     void displayError(String mesage);
+    void showProgressBar();
+    void hideProgressBar();
 }
